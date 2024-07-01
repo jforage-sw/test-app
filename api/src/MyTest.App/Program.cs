@@ -5,4 +5,4 @@
 using MyTest.App;
 
 Console.WriteLine(Helper.GetHelloWorld());
-//Console.WriteLine(Helper.GetGoodbye()); 
+//Console.WriteLine(Helper.GetGoodbye());
