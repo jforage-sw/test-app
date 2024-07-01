@@ -6,5 +6,5 @@ return;
 
 void MethodWithoutCoverage()
 {
-    throw new Exception();
+    throw new Exception("Error");
 }
