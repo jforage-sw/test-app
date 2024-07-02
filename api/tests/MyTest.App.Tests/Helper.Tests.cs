@@ -5,10 +5,10 @@ namespace MyTest.App.Tests;
 public class HelperTests
 {
     [Fact]
-    public void GetHelloWorld_ReturnsHelloWorld()
+    public void GetHelloWorld_ReturnsExpected()
     {
         // Arrange
-        var expected = "Hello, World!";
+        const string expected = "Hello, World!";
 
         // Act
         var actual = Helper.GetHelloWorld();
@@ -17,16 +17,16 @@ public class HelperTests
         Assert.Equal(expected, actual);
     }
 
-    /*[Fact]
-    public void GetGoodbye_ReturnsGoodbye()
+    [Fact]
+    public void GetGoodbye_ReturnsExpected()
     {
         // Arrange
-        var expected = "Goodbye!";
+        const string expected = "Goodbye!";
 
         // Act
         var actual = Helper.GetGoodbye();
 
         // Assert
         Assert.Equal(expected, actual);
-    }*/
+    }
 }
