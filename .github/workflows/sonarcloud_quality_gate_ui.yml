@@ -1,4 +1,4 @@
-name: SonarCloud Quality Gat UI
+name: SonarCloud Quality Gate UI
 on:
   push:
     branches:
