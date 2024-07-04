@@ -1,4 +1,4 @@
-name: SonarCloud Quality Gate
+name: SonarCloud Quality Gate API
 on:
   push:
     branches:
