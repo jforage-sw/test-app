@@ -1,4 +1,4 @@
-name: Sonar Cloud Quality Gate
+name: SonarCloud Quality Gate
 on:
   push:
     branches:
