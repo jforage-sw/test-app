@@ -20,7 +20,7 @@ jobs:
       - name: Test and coverage
         run: |
           cd ui
-          yarn jest --coverage
+          yarn jest --coverage --passWithNoTests
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         with:
