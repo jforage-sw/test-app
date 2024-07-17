@@ -9,37 +9,44 @@ on:
       - main
       - 'features/**'
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    # Required permissions
+    permissions:
+      pull-requests: read
+    # Set job outputs to values from filter step
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+    steps:
+    # For pull requests it's not necessary to checkout the code
+    - uses: dorny/paths-filter@v3
+      id: filter
+      with:
+        filters: |
+          backend:
+            - 'api/**'
   build:
     name: Build and analyze
+    needs: changes
+    if: ${{ needs.changes.outputs.backend == 'true' }}
     runs-on: windows-latest
     steps:
-      - name: Check changes
-        uses: dorny/paths-filter@v3
-        id: changes
-        with:
-          filters: |
-            src:
-              - 'api/**'
       - name: Set up JDK 17
-        if: steps.changes.outputs.src == 'true'
         uses: actions/setup-java@v3
         with:
           java-version: 17
           distribution: 'zulu' # Alternative distribution options are available.
       - name: Branch checkout
-        if: steps.changes.outputs.src == 'true'
         uses: actions/checkout@v3
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
       - name: Cache SonarCloud packages
-        if: steps.changes.outputs.src == 'true'
         uses: actions/cache@v3
         with:
           path: ~\sonar\cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
       - name: Cache SonarCloud scanner
-        if: steps.changes.outputs.src == 'true'
         id: cache-sonar-scanner
         uses: actions/cache@v3
         with:
@@ -47,17 +54,15 @@ jobs:
           key: ${{ runner.os }}-sonar-scanner
           restore-keys: ${{ runner.os }}-sonar-scanner
       - name: Install SonarCloud scanner
-        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true' && steps.changes.outputs.src == 'true'
+        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
         shell: powershell
         run: |
           New-Item -Path .\.sonar\scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
       - name: Install DotNet Coverage
-        if: steps.changes.outputs.src == 'true'
         run: |
           dotnet tool install --global dotnet-coverage
       - name: Build and analyze
-        if: steps.changes.outputs.src == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_API }}
