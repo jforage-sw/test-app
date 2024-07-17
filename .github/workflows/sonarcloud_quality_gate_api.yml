@@ -17,19 +17,19 @@ jobs:
       pull-requests: read
     # Set job outputs to values from filter step
     outputs:
-      backend: ${{ steps.filter.outputs.backend }}
+      src: ${{ steps.filter.outputs.src }}
     steps:
     # For pull requests it's not necessary to checkout the code
     - uses: dorny/paths-filter@v3
       id: filter
       with:
         filters: |
-          backend:
+          src:
             - 'api/**'
   build:
     name: Build and analyze
     needs: changes
-    if: ${{ needs.changes.outputs.backend == 'true' }}
+    if: ${{ needs.changes.outputs.src == 'true' }}
     runs-on: windows-latest
     steps:
       - name: Set up JDK 17
