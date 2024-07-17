@@ -26,10 +26,10 @@ jobs:
   sonarcloud:
     name: Analyze
     needs: changes
-    if: ${{ needs.changes.outputs.src == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        if: ${{ needs.changes.outputs.src == 'true' }}
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
       #- name: Install dependencies
@@ -41,6 +41,7 @@ jobs:
       #    cd ui
       #    yarn jest --coverage --passWithNoTests
       - name: SonarCloud Scan
+        if: ${{ needs.changes.outputs.src == 'true' }}
         uses: SonarSource/sonarcloud-github-action@master
         with:
           projectBaseDir: ui
