@@ -3,15 +3,11 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'ui/**'  
   pull_request:
     types: [opened, synchronize, reopened]
     branches:
       - main
       - 'features/**'
-    paths:
-      - 'ui/**'
 jobs:
   changes:
     name: Check changes
