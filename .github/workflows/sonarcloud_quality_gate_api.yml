@@ -3,30 +3,34 @@ on:
   push:
     branches:
       - main
+    #paths:
+    #  - 'api/**'
   pull_request:
     types: [opened, synchronize, reopened]
     branches:
       - main
       - 'features/**'
+    #paths:
+    #  - 'api/**'
 jobs:
-  changes:
-    name: Check changes
-    runs-on: windows-latest
-    permissions:
-      pull-requests: read
-    outputs:
-      src: ${{ steps.filter.outputs.src }}
-    steps:
-    - uses: dorny/paths-filter@v3
-      id: filter
-      with:
-        filters: |
-          src:
-            - 'api/**'
+  #changes:
+  #  name: Check changes
+  #  runs-on: windows-latest
+  #  permissions:
+  #    pull-requests: read
+  #  outputs:
+  #    src: ${{ steps.filter.outputs.src }}
+  #  steps:
+  #  - uses: dorny/paths-filter@v3
+  #    id: filter
+  #    with:
+  #      filters: |
+  #        src:
+  #          - 'api/**'
   build:
     name: Build and analyze
-    needs: changes
-    if: ${{ needs.changes.outputs.src == 'true' }}
+    #needs: changes
+    #if: ${{ needs.changes.outputs.src == 'true' }}
     runs-on: windows-latest
     steps:
       - name: Set up JDK 17
