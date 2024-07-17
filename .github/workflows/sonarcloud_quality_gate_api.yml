@@ -11,15 +11,12 @@ on:
 jobs:
   changes:
     name: Check changes
-    runs-on: ubuntu-latest
-    # Required permissions
+    runs-on: windows-latest
     permissions:
       pull-requests: read
-    # Set job outputs to values from filter step
     outputs:
       src: ${{ steps.filter.outputs.src }}
     steps:
-    # For pull requests it's not necessary to checkout the code
     - uses: dorny/paths-filter@v3
       id: filter
       with:
