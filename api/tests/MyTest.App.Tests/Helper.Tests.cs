@@ -8,7 +8,7 @@ public class HelperTests
     public void GetHelloWorld_ReturnsExpected()
     {
         // Arrange
-        const string expected = "Hello, World!";
+        const string expected = "Hello, World!!!!";
 
         // Act
         var actual = Helper.GetHelloWorld();
