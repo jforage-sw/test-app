@@ -1,5 +1,8 @@
-﻿namespace MyTest.App;
+﻿using System.Diagnostics.CodeAnalysis;
 
+namespace MyTest.App;
+
+[ExcludeFromCodeCoverage]
 public static class Helper
 {
     public static string GetHelloWorld() => "Hello, World!";
