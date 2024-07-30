@@ -16,5 +16,25 @@ public static class Helper
         {
             Console.WriteLine(i);
         }
+
+        foreach (var i in Enumerable.Range(1, 5))
+        {
+            Console.WriteLine(i);
+        }
+
+        foreach (var i in Enumerable.Range(1, 5))
+        {
+            Console.WriteLine(i);
+        }
+
+        foreach (var i in Enumerable.Range(1, 5))
+        {
+            Console.WriteLine(i);
+        }
+
+        foreach (var i in Enumerable.Range(1, 5))
+        {
+            Console.WriteLine(i);
+        }
     }
 }
