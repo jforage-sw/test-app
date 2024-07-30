@@ -2,7 +2,7 @@
 
 namespace MyTest.App;
 
-[ExcludeFromCodeCoverage]
+//[ExcludeFromCodeCoverage]
 public static class Helper
 {
     public static string GetHelloWorld() => "Hello, World!";
