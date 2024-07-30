@@ -1,5 +1,4 @@
-﻿/*
-using Xunit;
+﻿using Xunit;
 
 namespace MyTest.App.Tests;
 
@@ -31,4 +30,3 @@ public class HelperTests
         Assert.Equal(expected, actual);
     }
 }
-*/
