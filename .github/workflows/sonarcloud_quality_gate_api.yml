@@ -54,10 +54,10 @@ jobs:
           path: .\.sonar\scanner
           key: ${{ runner.os }}-sonar-scanner
           restore-keys: ${{ runner.os }}-sonar-scanner
-      - name: NuGet Login
-        if: steps.path-filter.outputs.exists == 'true'
-        run: |
-          dotnet nuget update source smartwyre -s https://pkgs.dev.azure.com/smartwyre/smartwyre/_packaging/smartwyre/nuget/v3/index.json -u az -p ${{ secrets.AZURE_DEVOPS_TOKEN }} --configfile .\api\nuget.config
+      #- name: NuGet Login
+      #  if: steps.path-filter.outputs.exists == 'true'
+      #  run: |
+      #    dotnet nuget update source smartwyre -s https://pkgs.dev.azure.com/smartwyre/smartwyre/_packaging/smartwyre/nuget/v3/index.json -u az -p ${{ secrets.AZURE_DEVOPS_TOKEN }} --configfile .\api\nuget.config
       - name: Install SonarCloud scanner
         if: steps.cache-sonar-scanner.outputs.cache-hit != 'true' && steps.path-filter.outputs.exists == 'true'
         shell: powershell
