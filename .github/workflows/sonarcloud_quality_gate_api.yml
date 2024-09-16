@@ -19,40 +19,33 @@ jobs:
     name: SonarCloud Analyze API
     runs-on: windows-latest
     steps:
-      - name: Check modified files
-        uses: yumemi-inc/path-filter@v2
-        id: path-filter
-        with:
-          patterns: |
-            api/**
+      #- name: Check modified files
+      #  uses: yumemi-inc/path-filter@v2
+      #  id: path-filter
+      #  with:
+      #    patterns: |
+      #      api/**
       - name: Set up JDK 17
-        if: steps.path-filter.outputs.exists == 'true'
+      #  if: steps.path-filter.outputs.exists == 'true'
         uses: actions/setup-java@v3
         with:
           java-version: 17
           distribution: 'zulu' # Alternative distribution options are available.
       - name: Configure Git
-        if: steps.path-filter.outputs.exists == 'true'
+      #  if: steps.path-filter.outputs.exists == 'true'
         run: |
           git config --system core.longpaths true
       - uses: actions/checkout@v3
-        if: steps.path-filter.outputs.exists == 'true'
+      #  if: steps.path-filter.outputs.exists == 'true'
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
       - name: Set up DotNet
-        if: steps.path-filter.outputs.exists == 'true'
+      #  if: steps.path-filter.outputs.exists == 'true'
         uses: actions/setup-dotnet@v4
         with:
           global-json-file: api/global.json
-      - name: Cache SonarCloud packages
-        if: steps.path-filter.outputs.exists == 'true'
-        uses: actions/cache@v3
-        with:
-          path: ~\sonar\cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
       - name: Cache SonarCloud scanner
-        if: steps.path-filter.outputs.exists == 'true'
+      #  if: steps.path-filter.outputs.exists == 'true'
         id: cache-sonar-scanner
         uses: actions/cache@v3
         with:
@@ -64,28 +57,28 @@ jobs:
       #  run: |
       #    dotnet nuget update source smartwyre -s https://pkgs.dev.azure.com/smartwyre/smartwyre/_packaging/smartwyre/nuget/v3/index.json -u az -p ${{ secrets.AZURE_DEVOPS_TOKEN }} --configfile .\api\nuget.config
       - name: Install SonarCloud scanner
-        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true' && steps.path-filter.outputs.exists == 'true'
+        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true' # && steps.path-filter.outputs.exists == 'true'
         shell: powershell
         run: |
           New-Item -Path .\.sonar\scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
       - name: Install DotNet Coverage
-        if: steps.path-filter.outputs.exists == 'true'
+      #  if: steps.path-filter.outputs.exists == 'true'
         run: |
           dotnet tool install --global dotnet-coverage
       - name: Run DotNet Restore
-        if: steps.path-filter.outputs.exists == 'true'
+      #  if: steps.path-filter.outputs.exists == 'true'
         run: |
           dotnet restore .\api
       - name: Run Build and Analyze API
-        if: steps.path-filter.outputs.exists == 'true'
+      #  if: steps.path-filter.outputs.exists == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_API }}
         shell: powershell
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin \
-            /k:"jforage-sw_test-app" \
+            /k:jforage-sw_test-app \
             /n:"MyTestApp API" \
             /o:"jforage-sw" \
             /d:sonar.token="${{ secrets.SONAR_TOKEN_API }}" \
