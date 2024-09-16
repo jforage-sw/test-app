@@ -17,7 +17,7 @@ env:
 jobs:
   build:
     name: SonarCloud Analyze API
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       #- name: Check modified files
       #  uses: yumemi-inc/path-filter@v2
@@ -58,7 +58,7 @@ jobs:
       #    dotnet nuget update source smartwyre -s https://pkgs.dev.azure.com/smartwyre/smartwyre/_packaging/smartwyre/nuget/v3/index.json -u az -p ${{ secrets.AZURE_DEVOPS_TOKEN }} --configfile .\api\nuget.config
       - name: Install SonarCloud scanner
         if: steps.cache-sonar-scanner.outputs.cache-hit != 'true' # && steps.path-filter.outputs.exists == 'true'
-        shell: powershell
+        shell: pwsh
         run: |
           New-Item -Path .\.sonar\scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
@@ -75,18 +75,18 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_API }}
-        shell: powershell
+        shell: pwsh
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin \
-            /k:'jforage-sw_test-app' \
-            /n:'MyTestApp API' \
-            /o:'jforage-sw' \
-            /d:sonar.token='${{ secrets.SONAR_TOKEN_API }}' \
-            /d:sonar.host.url='https://sonarcloud.io' \
-            /d:sonar.cs.vscoveragexml.reportsPaths='coverage.xml' \
-            /d:sonar.coverage.exclusions="'${{ env.sonar_coverage_exclusions }}' \
-            /d:sonar.exclusions='${{ env.sonar_exclusions }}' \
-            /d:sonar.qualitygate.wait='true'
+            /k:"jforage-sw_test-app" \
+            /n:"MyTestApp API" \
+            /o:"jforage-sw" \
+            /d:sonar.token=${{ secrets.SONAR_TOKEN_API }} \
+            /d:sonar.host.url="https://sonarcloud.io" \
+            /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml \
+            /d:sonar.coverage.exclusions="${{ env.sonar_coverage_exclusions }}" \
+            /d:sonar.exclusions="${{ env.sonar_exclusions }}" \
+            /d:sonar.qualitygate.wait=true
             
           dotnet build .\api --no-restore --no-incremental /property:WarningLevel=0
           dotnet-coverage collect "dotnet test .\api --no-build --no-restore" -f xml -o "coverage.xml"
