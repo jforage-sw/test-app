@@ -27,7 +27,7 @@ jobs:
       #      api/**
       - name: Set up JDK 17
       #  if: steps.path-filter.outputs.exists == 'true'
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: 17
           distribution: 'zulu' # Alternative distribution options are available.
@@ -35,7 +35,7 @@ jobs:
       #  if: steps.path-filter.outputs.exists == 'true'
         run: |
           git config --global core.longpaths true
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       #  if: steps.path-filter.outputs.exists == 'true'
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
@@ -47,7 +47,7 @@ jobs:
       - name: Cache SonarCloud scanner
       #  if: steps.path-filter.outputs.exists == 'true'
         id: cache-sonar-scanner
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ./.sonar/scanner
           key: ${{ runner.os }}-sonar-scanner
@@ -77,18 +77,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_API }}
         shell: pwsh
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin \
-            /k:"jforage-sw_test-app" \
-            /n:"MyTestApp API" \
-            /o:"jforage-sw" \
-            /d:sonar.token="${{ secrets.SONAR_TOKEN_API }}" \
-            /d:sonar.host.url="https://sonarcloud.io" \
-            /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml \
-            /d:sonar.coverage.exclusions="${{ env.sonar_coverage_exclusions }}" \
-            /d:sonar.exclusions="${{ env.sonar_exclusions }}" \
-            /d:sonar.qualitygate.wait=true
-            
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"jforage-sw_test-app" /n:"MyTestApp API" /o:"jforage-sw" /d:sonar.token="${{ secrets.SONAR_TOKEN_API }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml /d:sonar.coverage.exclusions="${{ env.sonar_coverage_exclusions }}" /d:sonar.exclusions="${{ env.sonar_exclusions }}" /d:sonar.qualitygate.wait=true
           dotnet build .\api --no-restore --no-incremental /property:WarningLevel=0
           dotnet-coverage collect "dotnet test .\api --no-build --no-restore" -f xml -o "coverage.xml"
-          
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN_API }}"
