@@ -86,7 +86,8 @@ jobs:
             /d:sonar.token="${{ secrets.SONAR_TOKEN_API }}" \
             /d:sonar.host.url="https://sonarcloud.io" \
             /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml \
-            /d:sonar.coverage.exclusions=src/**/Program.cs,src/**/Startup.cs /d:sonar.exclusions=src/**/Migrations/**/*,tests/**/* \
+            /d:sonar.coverage.exclusions=src/**/Program.cs,src/**/Startup.cs \
+            /d:sonar.exclusions=src/**/Migrations/**/*,tests/**/* \
             /d:sonar.qualitygate.wait=true
             
           dotnet build .\api --no-restore --no-incremental /property:WarningLevel=0
