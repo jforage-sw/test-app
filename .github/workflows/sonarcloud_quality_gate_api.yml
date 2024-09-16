@@ -9,6 +9,11 @@ on:
     branches:
       - main
       - 'features/**'
+
+env:
+  sonar_exclusions: "src/**/Migrations/**/*,tests/**/*"
+  sonar_coverage_exclusions: "src/**/Program.cs,src/**/Startup.cs"
+
 jobs:
   build:
     name: SonarCloud Analyze API
@@ -86,8 +91,8 @@ jobs:
             /d:sonar.token="${{ secrets.SONAR_TOKEN_API }}" \
             /d:sonar.host.url="https://sonarcloud.io" \
             /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml \
-            /d:sonar.coverage.exclusions=src/**/Program.cs,src/**/Startup.cs \
-            /d:sonar.exclusions=src/**/Migrations/**/*,tests/**/* \
+            /d:sonar.coverage.exclusions="${{ env.sonar_coverage_exclusions }}" \
+            /d:sonar.exclusions="${{ env.sonar_exclusions }}" \
             /d:sonar.qualitygate.wait=true
             
           dotnet build .\api --no-restore --no-incremental /property:WarningLevel=0
