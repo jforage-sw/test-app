@@ -34,7 +34,7 @@ jobs:
       - name: Configure Git
       #  if: steps.path-filter.outputs.exists == 'true'
         run: |
-          git config --system core.longpaths true
+          git config --global core.longpaths true
       - uses: actions/checkout@v3
       #  if: steps.path-filter.outputs.exists == 'true'
         with:
