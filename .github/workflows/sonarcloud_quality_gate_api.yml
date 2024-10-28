@@ -86,7 +86,7 @@ jobs:
             /d:sonar.exclusions="${{ env.sonar_exclusions }}" `
             /d:sonar.test.exclusions=**/tests/** `
             /d:sonar.issue.ignore.allfile=ObsoleteIssues `
-            /d:sonar.issue.ignore.allfile.ObsoleteIssues.fileRegexp="\[Obsolete(.*)]" `
+            /d:sonar.issue.ignore.allfile.ObsoleteIssues.fileRegexp="^\[Obsolete(.*)\]$" `
             /d:sonar.qualitygate.wait=true
             
           dotnet build ./api --no-restore --no-incremental /property:WarningLevel=0
