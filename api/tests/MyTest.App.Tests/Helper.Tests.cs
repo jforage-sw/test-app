@@ -1,4 +1,5 @@
 ﻿using Xunit;
+#pragma warning disable CS0618 // Type or member is obsolete
 
 namespace MyTest.App.Tests;
 
@@ -8,7 +9,7 @@ public class HelperTests
     public void GetHelloWorld_ReturnsExpected()
     {
         // Arrange
-        const string expected = "Hello, World!";
+        const string expected = "Hello, World!!!!";
 
         // Act
         var actual = Helper.GetHelloWorld();

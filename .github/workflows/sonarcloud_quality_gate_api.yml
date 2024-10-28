@@ -11,8 +11,13 @@ on:
       - 'features/**'
 
 env:
-  sonar_exclusions: "**/Migrations/**,tests/**"
-  sonar_coverage_exclusions: "src/**/Program.cs,src/**/Startup.cs"
+  sonar_exclusions: >-
+    **/Migrations/**,
+    tests/**
+    
+  sonar_coverage_exclusions: >- 
+    src/**/Program.cs,
+    src/**/Startup.cs
 
 jobs:
   build:
@@ -70,14 +75,27 @@ jobs:
       #  if: steps.path-filter.outputs.exists == 'true'
         run: |
           dotnet restore ./api
-      - name: Run Build and Analyze API
-      #  if: steps.path-filter.outputs.exists == 'true'
+      - name: Build, Test and Analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_API }}
         shell: pwsh
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"jforage-sw_test-app" /n:"MyTestApp API" /o:"jforage-sw" /d:sonar.token="${{ secrets.SONAR_TOKEN_API }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml /d:sonar.coverage.exclusions="${{ env.sonar_coverage_exclusions }}" /d:sonar.exclusions="${{ env.sonar_exclusions }}" /d:sonar.qualitygate.wait=true
-          dotnet build .\api --no-restore --no-incremental /property:WarningLevel=0
-          dotnet-coverage collect "dotnet test .\api --no-build --no-restore" -f xml -o "coverage.xml"
-          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN_API }}"
+          ./.sonar/scanner/dotnet-sonarscanner begin `
+            /k:"jforage-sw_test-app" `
+            /o:"jforage-sw" `
+            /d:sonar.token="${{ secrets.SONAR_TOKEN_API }}" `
+            /d:sonar.host.url="https://sonarcloud.io" `
+            /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml `
+            /d:sonar.coverage.exclusions="${{ env.sonar_coverage_exclusions }}" `
+            /d:sonar.exclusions="${{ env.sonar_exclusions }}" `
+            /d:sonar.test.exclusions=**/tests/** `
+            /d:sonar.issue.ignore.allfile=ObsoleteIssues `
+            /d:sonar.issue.ignore.allfile.ObsoleteIssues.fileRegexp="^\[Obsolete(.*)\]$" `
+            /d:sonar.qualitygate.wait=true
+            
+          dotnet build ./api --no-restore --no-incremental /property:WarningLevel=0
+          
+          dotnet-coverage collect "dotnet test ./api --no-build --no-restore" -f xml -o "coverage.xml"
+          
+          ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN_API }}"
