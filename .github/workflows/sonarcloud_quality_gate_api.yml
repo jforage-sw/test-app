@@ -89,8 +89,8 @@ jobs:
             /d:sonar.issue.ignore.allfile.ObsoleteIssues.fileRegexp="\[Obsolete(.*)]" `
             /d:sonar.qualitygate.wait=true
             
-          dotnet build --no-restore --no-incremental /property:WarningLevel=0
+          dotnet build ./api --no-restore --no-incremental /property:WarningLevel=0
           
-          dotnet-coverage collect "dotnet test --no-build --no-restore" -f xml -o "coverage.xml"
+          dotnet-coverage collect "dotnet test ./api --no-build --no-restore" -f xml -o "coverage.xml"
           
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN_API }}"
