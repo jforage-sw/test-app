@@ -13,7 +13,6 @@ on:
 env:
   sonar_exclusions: >-
     **/Migrations/**,
-    **/Helper.cs,
     tests/**
     
   sonar_coverage_exclusions: >- 

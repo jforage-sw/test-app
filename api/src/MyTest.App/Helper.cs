@@ -1,10 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Security.Cryptography;
-
-namespace MyTest.App;
+﻿namespace MyTest.App;
 
 //[ExcludeFromCodeCoverage]
-[Obsolete("This class is obsolete")]
 public static class Helper
 {
     public static string GetHelloWorld() => "Hello, World!";
