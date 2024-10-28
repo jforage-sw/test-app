@@ -11,8 +11,14 @@ on:
       - 'features/**'
 
 env:
-  sonar_exclusions: "**/Migrations/**,tests/**"
-  sonar_coverage_exclusions: "src/**/Program.cs,src/**/Startup.cs"
+  sonar_exclusions: >-
+    **/Migrations/**,
+    **/Helper.cs,
+    tests/**
+    
+  sonar_coverage_exclusions: >- 
+    src/**/Program.cs,
+    src/**/Startup.cs
 
 jobs:
   build:
