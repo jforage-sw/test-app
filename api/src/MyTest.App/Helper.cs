@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 namespace MyTest.App;
 
 //[ExcludeFromCodeCoverage]
+[Obsolete("This class is obsolete")]
 public static class Helper
 {
     public static string GetHelloWorld() => "Hello, World!";
