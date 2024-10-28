@@ -77,7 +77,7 @@ jobs:
         shell: pwsh
         run: |
           ./.sonar/scanner/dotnet-sonarscanner begin `
-            /k:"jforage-sw_test-app" ` 
+            /k:"jforage-sw_test-app" `
             /o:"jforage-sw" `
             /d:sonar.token="${{ secrets.SONAR_TOKEN_API }}" `
             /d:sonar.host.url="https://sonarcloud.io" `
